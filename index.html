@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+    <title>Victor Crest Profile Card</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #40E0D0;
+            --secondary-color: #30C0B0;
+            --text-color: #333;
+            --bg-color: #F0F8FF;
+            --card-bg: white;
+        }
+
+        .dark-mode {
+            --primary-color: #2C7A7B;
+            --secondary-color: #285E61;
+            --text-color: #E2E8F0;
+            --bg-color: #1A202C;
+            --card-bg: #2D3748;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            transition: background-color 0.3s ease;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .profile-card {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 350px;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-header {
+            background-color: var(--primary-color);
+            height: 100px;
+            position: relative;
+        }
+
+        .card-header::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(to bottom right, transparent 49%, var(--card-bg) 51%);
+        }
+
+        .profile-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 5px solid var(--card-bg);
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+
+        .card-body {
+            padding-top: 60px;
+            text-align: center;
+            color: var(--text-color);
+        }
+
+        .name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .age {
+            color: #888;
+            font-weight: normal;
+        }
+
+        .location {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .stat-item:hover {
+            transform: scale(1.1);
+        }
+
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #888;
+            text-transform: uppercase;
+        }
+
+        .footer {
+            background-color: var(--secondary-color);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .social-icons {
+            margin-top: 20px;
+        }
+
+        .social-icons a {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin: 0 10px;
+            transition: color 0.2s ease;
+        }
+
+        .social-icons a:hover {
+            color: var(--secondary-color);
+        }
+
+        .dark-mode-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .dark-mode-toggle:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .stat-details {
+            display: none;
+            position: absolute;
+            background-color: var(--card-bg);
+            border: 1px solid var(--primary-color);
+            border-radius: 5px;
+            padding: 10px;
+            z-index: 10;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .background-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 10px;
+            }
+
+            .profile-card {
+                width: 100%;
+                max-width: 350px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-animation"></div>
+    <button class="dark-mode-toggle" id="darkModeToggle">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <div class="container">
+        <div class="profile-card animate__animated animate__fadeIn">
+            <div class="card-header">
+                <img src="images\image-victor.jpg" alt="Profile Picture" class="profile-image animate__animated animate__bounceIn">
+            </div>
+            <div class="card-body">
+                <h2 class="name">Victor Crest <span class="age">26</span></h2>
+                <p class="location">London</p>
+                <div class="stats">
+                    <div class="stat-item" data-stat="followers">
+                        <span class="stat-value">80K</span>
+                        <span class="stat-label">Followers</span>
+                    </div>
+                    <div class="stat-item" data-stat="likes">
+                        <span class="stat-value">803K</span>
+                        <span class="stat-label">Likes</span>
+                    </div>
+                    <div class="stat-item" data-stat="photos">
+                        <span class="stat-value">1.4K</span>
+                        <span class="stat-label">Photos</span>
+                    </div>
+                </div>
+                <div class="social-icons">
+                    <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer animate__animated animate__fadeInUp">
+        <p>&copy; 2023 Profile Card Component. All rights reserved.</p>
+        <p>Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
+    Coded by <a href="https://github.com/Hackerbot24">Hackerbot24</a>.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initial animations
+            gsap.from('.profile-card', {duration: 1, y: 50, opacity: 0, ease: 'power3.out'});
+            gsap.from('.stat-item', {duration: 0.5, y: 20, opacity: 0, stagger: 0.2, ease: 'power2.out', delay: 0.5});
+
+            // Dark mode toggle
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const body = document.body;
+
+            darkModeToggle.addEventListener('click', () => {
+                body.classList.toggle('dark-mode');
+                darkModeToggle.innerHTML = body.classList.contains('dark-mode') ? 
+                    '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            });
+
+            // Interactive stats
+            const statItems = document.querySelectorAll('.stat-item');
+            const statDetails = {
+                followers: "People following Victor's content",
+                likes: "Total likes received on posts",
+                photos: "Number of photos uploaded"
+            };
+
+            statItems.forEach(item => {
+                item.addEventListener('mouseenter', (e) => {
+                    const stat = e.currentTarget.dataset.stat;
+                    const details = document.createElement('div');
+                    details.className = 'stat-details';
+                    details.textContent = statDetails[stat];
+                    e.currentTarget.appendChild(details);
+                    gsap.to(details, {duration: 0.3, opacity: 1, y: 10});
+                });
+
+                item.addEventListener('mouseleave', (e) => {
+                    const details = e.currentTarget.querySelector('.stat-details');
+                    if (details) {
+                        gsap.to(details, {
+                            duration: 0.3, 
+                            opacity: 0, 
+                            y: -10, 
+                            onComplete: () => details.remove()
+                        });
+                    }
+                });
+            });
+
+            // Background animation
+            const bgAnimation = document.querySelector('.background-animation');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.style.position = 'absolute';
+                particle.style.width = '5px';
+                particle.style.height = '5px';
+                particle.style.background = 'var(--primary-color)';
+                particle.style.borderRadius = '50%';
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.top = Math.random() * 100 + 'vh';
+                bgAnimation.appendChild(particle);
+
+                gsap.to(particle, {
+                    x: 'random(-100, 100)',
+                    y: 'random(-100, 100)',
+                    opacity: 0,
+                    duration: 'random(3, 5)',
+                    repeat: -1,
+                    yoyo: true,
+                    ease: 'power1.inOut'
+                });
+            }
+        });
+    </script>
+</body>
+</html>
